@@ -1,6 +1,7 @@
 version: "3.3"
 services:
   postgis:
+    container_name: postgis
     image: kartoza/postgis:9.6-2.4
     volumes:
       - postgisVolume:/var/lib/postgresql
@@ -9,9 +10,10 @@ services:
       - POSTGRES_PASS=docker
       - ALLOW_IP_RANGE=0.0.0.0/0
     ports:
-      - "5432:5432"
+      - "54321:5432"
 
   tilemill:
+    container_name: tilemill
     build:
       context: ./
     ports:
@@ -26,6 +28,8 @@ services:
       - PGUSER=docker
       - PGPASSWORD=docker    
     depends_on:
+      - postgis
+    links:
       - postgis
 
 volumes:
